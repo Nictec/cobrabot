@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1022</width>
-    <height>593</height>
+    <height>689</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,22 +15,241 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="QLineEdit" name="ChatInput">
-      <property name="text">
-       <string/>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="icon">
+        <iconset theme="terminal">
+         <normaloff>.</normaloff>.</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Console</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QLineEdit" name="ChatInput">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>Senden</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QListWidget" name="chatField"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_6">
+       <attribute name="title">
+        <string>Mod Tools</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>950</width>
+             <height>581</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Caps Protection</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_3">
+               <item row="2" column="0">
+                <widget class="QPushButton" name="pushButton_2">
+                 <property name="text">
+                  <string>Speichern</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QWidget" name="widget" native="true">
+                 <layout class="QGridLayout" name="gridLayout_4">
+                  <item row="1" column="1">
+                   <widget class="QSpinBox" name="capsMin"/>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QLabel" name="label_4">
+                    <property name="text">
+                     <string>Min Caps</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>Punishment</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QComboBox" name="capsPunish">
+                    <item>
+                     <property name="text">
+                      <string>Purge</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Ban</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Remove</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QWidget" name="widget_2" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item>
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>Custom Reply:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="capsReply"/>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="title">
+               <string>Symbol Protection</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QWidget" name="widget_3" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <item>
+                   <widget class="QComboBox" name="symPunish">
+                    <item>
+                     <property name="text">
+                      <string>Purge</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Ban</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Remove</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="symMin"/>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_4" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_3">
+                  <item>
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string>Custom Reply:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="symReply"/>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_3">
+                 <property name="text">
+                  <string>speichern</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Profanity Protection</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <widget class="QPushButton" name="pushButton_4">
+                 <property name="maximumSize">
+                  <size>
+                   <width>50</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTableWidget" name="profTable">
+                 <column>
+                  <property name="text">
+                   <string>Word</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Punishment</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Options</string>
+                  </property>
+                 </column>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>Senden</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0" colspan="2">
-     <widget class="QListWidget" name="chatField"/>
     </item>
    </layout>
   </widget>

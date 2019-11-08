@@ -19,6 +19,9 @@ public:
     void sendMessage(QString msg);
     void enableCommands();
     void enableTags();
+    void ban(QString username);
+    void purge(QString username, int time);
+    void remove(QString id);
 
 private:
     void disconnectFromServer();

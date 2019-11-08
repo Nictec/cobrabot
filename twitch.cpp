@@ -81,3 +81,15 @@ void Twitch::enableTags(){
     this->connection->write(REQ.c_str());
     qInfo() << "tags request sent!" << endl;
 }
+
+void Twitch::ban(QString username){
+    this->sendMessage("/ban " + username);
+}
+
+void Twitch::purge(QString username, int time){
+    this->sendMessage("/timeout " + username + " " + QString::number(time));
+}
+
+void Twitch::remove(QString id){
+    this->sendMessage("/delete " + id);
+}

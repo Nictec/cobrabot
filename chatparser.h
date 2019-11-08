@@ -2,6 +2,8 @@
 #define CHATPARSER_H
 
 #include <QObject>
+#include "twitch.h"
+#include "modtools.h"
 
 class PrivMessage
 {
@@ -24,10 +26,11 @@ class ChatParser : public QObject
     Q_OBJECT
 public:
     explicit ChatParser(QObject *parent = nullptr);
-    QString parse(QString raw);
+    QStringList parse(QString raw, Twitch *twitch);
 
 private:
     PrivMessage parsePrivMessage(QString tags, QString message);
+    QString profanityProtection(QString tags, QString message);
 
 signals:
 
