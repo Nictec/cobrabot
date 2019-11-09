@@ -4,4 +4,5 @@ install:
 build_script:
   - qmake CobraBot.pro
   - mingw32-make
+  - cd release
   - dir
