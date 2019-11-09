@@ -3,4 +3,4 @@ install:
   - set PATH=%PATH%;%QTDIR%\bin;C:\MinGW\bin
 build_script:
   - qmake CobraBot.pro
-  - mingw64-make
+  - mingw32-make
