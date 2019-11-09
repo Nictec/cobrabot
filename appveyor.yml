@@ -4,6 +4,4 @@ install:
 build_script:
   - qmake CobraBot.pro
   - mingw32-make
-  
-artifacts:
-  - path: CobraBot.exe
+  - dir
