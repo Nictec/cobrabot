@@ -32,6 +32,10 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void on_save_profanity_response_clicked();
+
+    void on_pushButton_5_clicked();
+
 public slots:
     void on_ban();
     void on_purge();

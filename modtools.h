@@ -21,6 +21,8 @@ public:
 
     //profanity list
     QStringList profanityKeys;
+    int profanityPunishment;
+    QString profanityReplyTemplate;
 
     explicit Modtools(QObject *parent = nullptr);
 
@@ -28,6 +30,7 @@ public:
     void setSymSettings(int punishment, int max, QString reply);
     QString checkCaps(QString message, bool isMod, QString username, QString msgId, Twitch *twitch);
     QString checkSymbols(QString message, bool isMod, QString username, QString msgId, Twitch *twitch);
+    QString checkProfanity(QString message, bool isMod, QString username, QString msgId, Twitch *twitch);
 signals:
 
 public slots:

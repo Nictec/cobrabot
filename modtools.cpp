@@ -25,7 +25,14 @@ Modtools::Modtools(QObject *parent) : QObject(parent)
     //load the profanity list
     QString profSettings = QDir::currentPath() + "/config/profanity.ini";
     QSettings settingsProf(profSettings, QSettings::IniFormat);
+    settingsProf.beginGroup("profanities");
     this->profanityKeys = settingsProf.allKeys();
+
+    //load the profanity settings
+    settingsProf.endGroup();
+    settingsProf.beginGroup("settings");
+    this->profanityPunishment = settingsProf.value("punishment").toInt();
+    this->profanityReplyTemplate = settingsProf.value("response").toString();
 }
 
 void Modtools::setCapsSettings(int punishment, int max, QString reply){
@@ -68,6 +75,7 @@ QString Modtools::checkCaps(QString message, bool isMod, QString username, QStri
             }
         }
         if (uppercase >= this->maxCaps){
+            qInfo() << "To many caps letters";
             if (this->capsPunishment == 0){
                 twitch->purge(username, 30);
                 twitch->remove(msgId);
@@ -102,6 +110,7 @@ QString Modtools::checkSymbols(QString message, bool isMod, QString username, QS
     if (isMod){
         return message;
     } else {
+        qInfo() << "To many symbols";
         //split the message in words
         QStringList words = message.split(" ");
         //split the words in letters
@@ -149,5 +158,41 @@ QString Modtools::checkSymbols(QString message, bool isMod, QString username, QS
         }else{
             return message;
         }
+    }
+}
+
+QString Modtools::checkProfanity(QString message, bool isMod, QString username, QString msgId, Twitch *twitch){
+    if (isMod){
+        return message;
+    } else {
+        QString profSettings = QDir::currentPath() + "/config/profanity.ini";
+        QSettings settingsProf(profSettings, QSettings::IniFormat);
+        settingsProf.beginGroup("profanities");
+
+        for (int i = 0; i < this->profanityKeys.length(); i++){
+            if (message.indexOf(profanityKeys[i]) != -1) {
+                int punishment = settingsProf.value(profanityKeys[i]).toInt();
+                QVariantHash tmplData;
+                tmplData["user"] = username;
+                if (punishment == 0){
+                    twitch->purge(username, 30);
+                    tmplData["punishment"] = "timeout";
+                } else if (punishment == 1){
+                    twitch->ban(username);
+                    tmplData["punishment"] = "ban";
+                } else {
+                    twitch->remove(msgId);
+                    tmplData["punishment"] = "message removal";
+                }
+                //if a profanity is found break the loop
+                Mustache::Renderer renderer;
+                Mustache::QtVariantContext context(tmplData);
+                QString resp = renderer.render(this->profanityReplyTemplate, &context);
+
+                twitch->sendMessage(resp);
+                return resp;
+            }
+        }
+        return message;
     }
 }

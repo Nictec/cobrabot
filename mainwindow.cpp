@@ -9,6 +9,7 @@
 void MainWindow::loadTable(){
     QString profSettings = QDir::currentPath() + "/config/profanity.ini";
     QSettings settingsProf(profSettings, QSettings::IniFormat);
+    settingsProf.beginGroup("profanities");
 
     //set the profanities table
     for (int i = 0; i < this->modHandler->profanityKeys.length(); i++) {
@@ -55,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->symPunish->setCurrentIndex(this->modHandler->symPunishment);
     this->ui->symMin->setValue(this->modHandler->maxSym);
     this->ui->symReply->setText(this->modHandler->symReplyTemplate);
+
+    this->ui->profanityReply->setText(this->modHandler->profanityReplyTemplate);
+    this->ui->profanityPunishment->setCurrentIndex(this->modHandler->profanityPunishment);
 
     this->loadTable();
 
@@ -231,7 +235,45 @@ void MainWindow::on_profanity_save(){
     //write to the ini file
     QString capsSettings = QDir::currentPath() + "/config/profanity.ini";
     QSettings settings(capsSettings, QSettings::IniFormat);
+    settings.beginGroup("profanities");
+
     settings.setValue(word, punishment);
-    this->loadTable();
+
+    this->ui->profTable->insertRow(this->ui->profTable->rowCount());
+    QTableWidgetItem *keyWidget = new QTableWidgetItem(word);
+    this->ui->profTable->setItem(this->ui->profTable->rowCount()-1, 0, keyWidget);
+
+    //add the new word to the table
+    QString punishmentText;
+    if (punishment == 0){
+        punishmentText = "Purge";
+    } else if (punishment == 1){
+        punishmentText = "Ban";
+    } else {
+        punishmentText = "Remove";
+    }
+    this->ui->profTable->setItem(this->ui->profTable->rowCount()-1, 1, new QTableWidgetItem(punishmentText));
+
     this->profanityDialog->close();
+}
+
+void MainWindow::on_save_profanity_response_clicked()
+{
+    QString capsSettings = QDir::currentPath() + "/config/profanity.ini";
+    QSettings settings(capsSettings, QSettings::IniFormat);
+    settings.beginGroup("settings");
+
+    settings.setValue("response", this->ui->profanityReply->text());
+    settings.setValue("punishment", this->ui->profanityPunishment->currentIndex());
+
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    QString settingsFile = QDir::currentPath() + "/config/profanity.ini";
+    QSettings settings(settingsFile, QSettings::IniFormat);
+    settings.beginGroup("profanities");
+    settings.remove("");
+    settings.endGroup();
+    this->ui->profTable->setRowCount(0);
 }

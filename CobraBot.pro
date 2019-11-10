@@ -29,6 +29,7 @@ SOURCES += \
         helpers.cpp \
         main.cpp \
         mainwindow.cpp \
+        minigames.cpp \
         modtools.cpp \
         mustache.cpp \
         twitch.cpp
@@ -37,6 +38,7 @@ HEADERS += \
         chatparser.h \
         helpers.h \
         mainwindow.h \
+        minigames.h \
         modtools.h \
         mustache.h \
         twitch.h
