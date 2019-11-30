@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network webenginewidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,7 +25,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        botsetup.cpp \
         chatparser.cpp \
+        cobralink.cpp \
         helpers.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -35,7 +37,9 @@ SOURCES += \
         twitch.cpp
 
 HEADERS += \
+        botsetup.h \
         chatparser.h \
+        cobralink.h \
         helpers.h \
         mainwindow.h \
         minigames.h \
@@ -44,6 +48,7 @@ HEADERS += \
         twitch.h
 
 FORMS += \
+        botsetup.ui \
         mainwindow.ui
 
 # Default rules for deployment.

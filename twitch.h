@@ -12,7 +12,7 @@ public:
     explicit Twitch(QObject *parent = nullptr);
     QTcpSocket *connection;
     void loadBotConnection();
-    void setBotConnection(QString username, QString password, QString channel);
+    static void setBotConnection(QString username, QString password, QString channel);
     bool connectToServer(const QString &address, quint16 port);
     void login();
     void join();

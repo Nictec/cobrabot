@@ -5,6 +5,7 @@
 #include <QLayout>
 #include <QtAwesome.h>
 #include <QSettings>
+#include "botsetup.h"
 
 void MainWindow::loadTable(){
     QString profSettings = QDir::currentPath() + "/config/profanity.ini";
@@ -47,6 +48,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //start the ui
     ui->setupUi(this);
+
+    //check if the twitch.ini exists, if not open the setup dialog
+    if (!QFileInfo::exists(QDir::currentPath() + "/config/twitch.ini")){
+       BotSetup *bot = new BotSetup;
+       bot->show();
+    }
 
     //set the fields in the ui
     this->ui->capsPunish->setCurrentIndex(this->modHandler->capsPunishment);

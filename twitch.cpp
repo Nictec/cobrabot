@@ -36,7 +36,7 @@ bool Twitch::connectToServer(const QString &address, quint16 port){
 void Twitch::login(){
     this->loadBotConnection();
     if (connection->state() == QAbstractSocket::ConnectedState){
-        QString pw = "PASS oauth:" + this->password + "\r\n";
+        QString pw = "PASS " + this->password + "\r\n";
         QString username = "NICK " + this->username + "\r\n";
         QString channel = ":" + this->username + "!" + this->username + "@" + this->username+ ".tmi.twitch.tv " + "JOIN #" + this->channel + "\r\n";
         std::string PASS = pw.toStdString();
