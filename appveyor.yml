@@ -1,10 +1,10 @@
 install:
-  - cmd: set QTDIR=C:\Qt\5.13.2\msvc2015_64
-  - cmd: set PATH=%PATH%;%QTDIR%\bin
+  - set QTDIR=C:\Qt\5.13.2\msvc2015_64
+  - set path=%path%;%QTDIR%\bin;"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\Hostx64\x64"
 build_script:
-  - cmd: qmake CobraBot.pro
-  - cmd: NMAKE
-  - cmd: cd release
+  - qmake CobraBot.pro
+  - NMAKE
+  - cd release
   
 artifacts:
   - path: release\CobraBot.exe
