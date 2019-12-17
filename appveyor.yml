@@ -1,6 +1,7 @@
 install:
   - set QTDIR=C:\Qt\5.13.2\msvc2017_64
   - set PATH=%PATH%;%QTDIR%\bin
+  - dir C:\Qt\5.13.2\
 build_script:
   - qmake CobraBot.pro
   - NMAKE
