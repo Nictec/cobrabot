@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QtWidgets>
 #include <QPushButton>
+#include <QNetworkAccessManager>
 
 namespace Ui {
 class MainWindow;
@@ -35,6 +36,8 @@ private slots:
     void on_save_profanity_response_clicked();
 
     void on_pushButton_5_clicked();
+
+    void on_cmd_load_finished(QNetworkReply *reply);
 
 public slots:
     void on_ban();

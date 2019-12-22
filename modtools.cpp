@@ -107,12 +107,14 @@ QString Modtools::checkCaps(QString message, bool isMod, QString username, QStri
 }
 
 QString Modtools::checkSymbols(QString message, bool isMod, QString username, QString msgId, Twitch *twitch){
-    if (isMod){
+    if (isMod || username == twitch->getUsername()){
+        qInfo() << ">>>>>>>>>>>>>>" << username;
         return message;
     } else {
+        qInfo() << ">>>>>>>>>>>>>>" << username;
         qInfo() << "To many symbols";
         //split the message in words
-        QStringList words = message.split(" ");
+        QStringList words = message.toLower().split(" ");
         //split the words in letters
         QStringList letters;
         for (int i = 0; i < words.length(); i++){
@@ -121,7 +123,7 @@ QString Modtools::checkSymbols(QString message, bool isMod, QString username, QS
         letters.removeAll(QString(""));
         letters.removeAll(QString("\r"));
         letters.removeAll(QString("\n"));
-        qWarning() << letters;
+        qWarning() << "LETTERS: " << letters;
         //check if the letter is alphabetical, else add to symbol number
         int symbols = 0;
         for (int i = 0; i < letters.length(); i++){

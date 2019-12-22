@@ -3,9 +3,11 @@
 #include "chatparser.h"
 #include<QDebug>
 #include <QLayout>
+#include <QNetworkReply>
 #include <QtAwesome.h>
 #include <QSettings>
 #include "botsetup.h"
+#include "cobralink.h"
 
 void MainWindow::loadTable(){
     QString profSettings = QDir::currentPath() + "/config/profanity.ini";
@@ -54,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent) :
        BotSetup *bot = new BotSetup;
        bot->show();
     }
+
+    //stretch the CommandTable
+    this->ui->CommandTable->horizontalHeader()->setStretchLastSection(true);
 
     //set the fields in the ui
     this->ui->capsPunish->setCurrentIndex(this->modHandler->capsPunishment);
@@ -116,7 +121,7 @@ void MainWindow::on_delete(){
 
 void MainWindow::onChat(){
     QString readline = this->twitchHandler->connection->readAll();
-    //qInfo() << readline;
+    qInfo() << "raw irc: " << readline;
     if (readline.startsWith("PING")){
         QString answer = "PONG :tmi.twitch.tv\r\n";
         std::string PONG = answer.toStdString();
@@ -283,4 +288,16 @@ void MainWindow::on_pushButton_5_clicked()
     settings.remove("");
     settings.endGroup();
     this->ui->profTable->setRowCount(0);
+}
+
+//command ui handler
+void MainWindow::on_cmd_load_finished(QNetworkReply *reply){
+    if (reply->error()){
+            qDebug() << reply->errorString();
+            return;
+        }
+        QByteArray bytes = reply->readAll();
+        QString str = QString::fromUtf8(bytes.data(), bytes.size());
+        QJsonObject respObj = QJsonDocument::fromJson(bytes.data()).object();
+        qInfo() << respObj.toVariantMap()["cmd"].toString();
 }

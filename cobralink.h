@@ -15,6 +15,11 @@ public:
 
     QDialog *window;
     bool verifyCredentials(QString botToken, QString streamerToken, QString cobraToken);
+    void getCommands(QString coraToken);
+
+    QNetworkAccessManager *cmdManager;
+    QNetworkRequest cmdRequest;
+    QJsonDocument cmdAnswer;
 
 signals:
 

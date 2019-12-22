@@ -41,9 +41,10 @@ QStringList ChatParser::parse(QString raw, Twitch *twitch){
             }
             PrivMessage data = this->parsePrivMessage(tags, message);
             Modtools mod;
-            data.message = mod.checkCaps(data.message, data.mod, data.username, data.id, twitch);
-            data.message = mod.checkSymbols(data.message, data.mod, data.username, data.id, twitch);
-            data.message = mod.checkProfanity(data.message, data.mod, data.username, data.id, twitch);
+            QString baseMessage = data.message;
+            data.message = mod.checkCaps(baseMessage, data.mod, data.username, data.id, twitch);
+            data.message = mod.checkSymbols(baseMessage, data.mod, data.username, data.id, twitch);
+            data.message = mod.checkProfanity(baseMessage, data.mod, data.username, data.id, twitch);
             qInfo() << "Parsing successfull";
 
             QString colored = "<font color=" + data.color + ">" + data.username + ": </font>" + data.message;

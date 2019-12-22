@@ -15,15 +15,22 @@ void Twitch::loadBotConnection(){
      this->username = settings.value("username").toString();
      this->password = settings.value("password").toString();
      this->channel = settings.value("channel").toString();
+     settings.endGroup();
+     settings.beginGroup("streamer");
+     this->strPassword = settings.value("password").toString();
 }
 
-void Twitch::setBotConnection(QString username, QString password, QString channel){
+void Twitch::setBotConnection(QString botUsername, QString botPassword, QString channel, QString strUsername, QString strPassword){
     QString twitchSettings = QDir::currentPath() + "/config/twitch.ini";
     QSettings settings(twitchSettings, QSettings::IniFormat);
     settings.beginGroup("bot");
-    settings.setValue("username", username);
-    settings.setValue("password", password);
+    settings.setValue("username", botUsername);
+    settings.setValue("password", botPassword);
     settings.setValue("channel", channel);
+    settings.endGroup();
+    settings.beginGroup("streamer");
+    settings.setValue("username", strUsername);
+    settings.setValue("password", strPassword);
 }
 
 bool Twitch::connectToServer(const QString &address, quint16 port){
@@ -36,7 +43,8 @@ bool Twitch::connectToServer(const QString &address, quint16 port){
 void Twitch::login(){
     this->loadBotConnection();
     if (connection->state() == QAbstractSocket::ConnectedState){
-        QString pw = "PASS " + this->password + "\r\n";
+        //bot login
+        QString pw = "PASS oauth:" + this->password + "\r\n";
         QString username = "NICK " + this->username + "\r\n";
         QString channel = ":" + this->username + "!" + this->username + "@" + this->username+ ".tmi.twitch.tv " + "JOIN #" + this->channel + "\r\n";
         std::string PASS = pw.toStdString();
@@ -45,7 +53,7 @@ void Twitch::login(){
         this->connection->write(PASS.c_str());
         this->connection->write(NICK.c_str());
         if (connection->waitForBytesWritten()){
-            qInfo() << "login request sent!" << endl;
+            qInfo() << "bot login request sent!" << endl;
 
         }
     } else {
@@ -92,4 +100,8 @@ void Twitch::purge(QString username, int time){
 
 void Twitch::remove(QString id){
     this->sendMessage("/delete " + id);
+}
+
+QString Twitch::getUsername(){
+    return this->username;
 }

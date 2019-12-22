@@ -18,7 +18,7 @@ void CobraLink::authResponse(QNetworkReply *reply){
     //check the credentials
 
     if (respObj.toVariantMap()["bot_key"].toString() == this->formData->value("botToken") && respObj.toVariantMap()["streamer_key"].toString() == this->formData->value("streamerToken")){
-        Twitch::setBotConnection(respObj.toVariantHash()["bot_name"].toString(), respObj.toVariantHash()["bot_key"].toString(), respObj.toVariantHash()["streamer_name"].toString());
+        Twitch::setBotConnection(respObj.toVariantHash()["bot_name"].toString(), respObj.toVariantHash()["bot_key"].toString(), respObj.toVariantHash()["streamer_name"].toString(), respObj.toVariantHash()["streamer_name"].toString(), respObj.toVariantHash()["streamer_key"].toString());
         success.setText("Success");
         success.setInformativeText("The config was sucessfully saved");
         success.setStandardButtons(QMessageBox::Ok);
@@ -53,4 +53,10 @@ bool CobraLink::verifyCredentials(QString botToken, QString streamerToken, QStri
     this->formData->insert("streamerToken", streamerToken);
     this->formData->insert("cobraToken", cobraToken);
     return true;
+}
+
+void CobraLink::getCommands(QString cobraToken){
+    this->cmdRequest.setUrl(QUrl("http://localhost:5000/api/commands/"));
+    this->cmdRequest.setRawHeader("Authentication", cobraToken.toUtf8());
+    this->cmdManager->get(this->cmdRequest);
 }
