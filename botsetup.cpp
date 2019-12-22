@@ -1,27 +1,9 @@
 #include <QSettings>
 #include <QDir>
-#include <QtWebEngineWidgets/QWebEngineView>
-#include <QWebChannel>
 #include <QDesktopServices>
 #include "botsetup.h"
 #include "ui_botsetup.h"
 #include "cobralink.h"
-
-
-WebPipe::WebPipe(int step){
-    this->setupStep = step;
-}
-
-void WebPipe::tokenCallback(const QString *token){
-    QString twitchSettings = QDir::currentPath() + "/config/twitch.ini";
-    QSettings settings(twitchSettings, QSettings::IniFormat);
-    if(this->setupStep == 1){
-        settings.beginGroup("bot");
-    } else {
-        settings.beginGroup("streamer");
-    }
-    settings.setValue("password", token);
-}
 
 BotSetup::BotSetup(QWidget *parent) :
     QDialog(parent),

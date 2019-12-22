@@ -27,15 +27,4 @@ private slots:
 private:
     Ui::BotSetup *ui;
 };
-
-class WebPipe : public QObject
-{
-    Q_OBJECT
-public:
-    WebPipe(int step);
-    int setupStep;
-public slots:
-    void tokenCallback(const QString *token);
-};
-
 #endif // BOTSETUP_H
