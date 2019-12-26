@@ -8,6 +8,7 @@
 #include <QtWidgets>
 #include <QPushButton>
 #include <QNetworkAccessManager>
+#include <cobralink.h>
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +23,8 @@ public:
     ~MainWindow();
     Twitch *twitchHandler;
     Modtools *modHandler;
+    CobraLink *cobra;
+    QJsonArray commands;
 
 private slots:
     void on_pushButton_clicked();
@@ -38,6 +41,8 @@ private slots:
     void on_pushButton_5_clicked();
 
     void on_cmd_load_finished(QNetworkReply *reply);
+
+    void on_pushButton_6_clicked();
 
 public slots:
     void on_ban();

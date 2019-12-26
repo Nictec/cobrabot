@@ -20,7 +20,7 @@ void Twitch::loadBotConnection(){
      this->strPassword = settings.value("password").toString();
 }
 
-void Twitch::setBotConnection(QString botUsername, QString botPassword, QString channel, QString strUsername, QString strPassword){
+void Twitch::setBotConnection(QString botUsername, QString botPassword, QString channel, QString strUsername, QString strPassword, QString cobraToken){
     QString twitchSettings = QDir::currentPath() + "/config/twitch.ini";
     QSettings settings(twitchSettings, QSettings::IniFormat);
     settings.beginGroup("bot");
@@ -31,6 +31,9 @@ void Twitch::setBotConnection(QString botUsername, QString botPassword, QString 
     settings.beginGroup("streamer");
     settings.setValue("username", strUsername);
     settings.setValue("password", strPassword);
+    settings.endGroup();
+    settings.beginGroup("CobraLink");
+    settings.setValue("token", cobraToken);
 }
 
 bool Twitch::connectToServer(const QString &address, quint16 port){

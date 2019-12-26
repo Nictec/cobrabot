@@ -13,7 +13,7 @@ public:
     QTcpSocket *connection;
     void loadBotConnection();
     QString getUsername();
-    static void setBotConnection(QString botUsername, QString botPassword, QString channel, QString strUsername, QString strPassword);
+    static void setBotConnection(QString botUsername, QString botPassword, QString channel, QString strUsername, QString strPassword, QString cobraToken);
     bool connectToServer(const QString &address, quint16 port);
     void login();
     void join();

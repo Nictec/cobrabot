@@ -82,6 +82,17 @@ MainWindow::MainWindow(QWidget *parent) :
     this->twitchHandler->enableCommands();
     this->twitchHandler->enableTags();
     this->ui->chatField->addItem("Info: Verbindung erfolgreich");
+
+    //connect the cobralink event
+    this->cobra = new CobraLink;
+    connect(cobra->cmdManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_cmd_load_finished(QNetworkReply*)));
+
+    //load the commands from the Server
+    QString twitchSettings = QDir::currentPath() + "/config/twitch.ini";
+    QSettings settings(twitchSettings, QSettings::IniFormat);
+    settings.beginGroup("CobraLink");
+    QString token = settings.value("token").toString();
+    this->cobra->getCommands(token);
 }
 
 MainWindow::~MainWindow()
@@ -292,12 +303,28 @@ void MainWindow::on_pushButton_5_clicked()
 
 //command ui handler
 void MainWindow::on_cmd_load_finished(QNetworkReply *reply){
+    qInfo() << "received";
     if (reply->error()){
             qDebug() << reply->errorString();
             return;
         }
         QByteArray bytes = reply->readAll();
         QString str = QString::fromUtf8(bytes.data(), bytes.size());
-        QJsonObject respObj = QJsonDocument::fromJson(bytes.data()).object();
-        qInfo() << respObj.toVariantMap()["cmd"].toString();
+        QJsonArray respObj = QJsonDocument::fromJson(bytes.data()).array();
+        this->commands = respObj;
+
+        foreach(const QJsonValue & cmd, respObj){
+            this->ui->CommandTable->insertRow(this->ui->CommandTable->rowCount());
+            QTableWidgetItem *keyWidget = new QTableWidgetItem(cmd.toObject().toVariantHash()["active"].toString());
+            this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 0, keyWidget);
+            this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 1, new QTableWidgetItem(cmd.toObject().toVariantHash()["cmd"].toString()));
+            this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 2, new QTableWidgetItem(cmd.toObject().toVariantHash()["cost"].toString()));
+            this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 3, new QTableWidgetItem(cmd.toObject().toVariantHash()["mod_only"].toString()));
+            this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 4, new QTableWidgetItem(cmd.toObject().toVariantHash()["response"].toString()));
+        }
+}
+
+void MainWindow::on_pushButton_6_clicked()
+{
+    qInfo() << "Press event";
 }

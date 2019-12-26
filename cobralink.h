@@ -15,7 +15,7 @@ public:
 
     QDialog *window;
     bool verifyCredentials(QString botToken, QString streamerToken, QString cobraToken);
-    void getCommands(QString coraToken);
+    void getCommands(QString cobraToken);
 
     QNetworkAccessManager *cmdManager;
     QNetworkRequest cmdRequest;
@@ -33,6 +33,7 @@ private:
     QJsonDocument authAnswer;
     QMap<QString, QString> *formData;
     bool success;
+    QString Token;
 };
 
 #endif // COBRALINK_H

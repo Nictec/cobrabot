@@ -28,6 +28,7 @@ SOURCES += \
         botsetup.cpp \
         chatparser.cpp \
         cobralink.cpp \
+        commands.cpp \
         helpers.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
         botsetup.h \
         chatparser.h \
         cobralink.h \
+        commands.h \
         helpers.h \
         mainwindow.h \
         minigames.h \

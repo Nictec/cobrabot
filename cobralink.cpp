@@ -18,12 +18,13 @@ void CobraLink::authResponse(QNetworkReply *reply){
     //check the credentials
 
     if (respObj.toVariantMap()["bot_key"].toString() == this->formData->value("botToken") && respObj.toVariantMap()["streamer_key"].toString() == this->formData->value("streamerToken")){
-        Twitch::setBotConnection(respObj.toVariantHash()["bot_name"].toString(), respObj.toVariantHash()["bot_key"].toString(), respObj.toVariantHash()["streamer_name"].toString(), respObj.toVariantHash()["streamer_name"].toString(), respObj.toVariantHash()["streamer_key"].toString());
+        Twitch::setBotConnection(respObj.toVariantHash()["bot_name"].toString(), respObj.toVariantHash()["bot_key"].toString(), respObj.toVariantHash()["streamer_name"].toString(), respObj.toVariantHash()["streamer_name"].toString(), respObj.toVariantHash()["streamer_key"].toString(), respObj.toVariantHash()["cobra_key"].toString());
         success.setText("Success");
         success.setInformativeText("The config was sucessfully saved");
         success.setStandardButtons(QMessageBox::Ok);
         success.setDefaultButton(QMessageBox::Ok);
         success.exec();
+
     } else {
         success.setText("Error:");
         success.setInformativeText("One or more of the provided tokens was wrong! Please try again.");
@@ -36,8 +37,10 @@ void CobraLink::authResponse(QNetworkReply *reply){
 
 CobraLink::CobraLink(QObject *parent) : QObject(parent)
 {
+
     this->success = false;
     this->authManager = new QNetworkAccessManager();
+    this->cmdManager = new QNetworkAccessManager();
     connect(this->authManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(authResponse(QNetworkReply*)));
 }
 
@@ -56,6 +59,7 @@ bool CobraLink::verifyCredentials(QString botToken, QString streamerToken, QStri
 }
 
 void CobraLink::getCommands(QString cobraToken){
+    qInfo() << cobraToken;
     this->cmdRequest.setUrl(QUrl("http://localhost:5000/api/commands/"));
     this->cmdRequest.setRawHeader("Authentication", cobraToken.toUtf8());
     this->cmdManager->get(this->cmdRequest);
