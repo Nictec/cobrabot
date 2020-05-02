@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        addcommand.cpp \
         botsetup.cpp \
         chatparser.cpp \
         cobralink.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
         twitch.cpp
 
 HEADERS += \
+        addcommand.h \
         botsetup.h \
         chatparser.h \
         cobralink.h \
@@ -50,6 +52,7 @@ HEADERS += \
         twitch.h
 
 FORMS += \
+        addcommand.ui \
         botsetup.ui \
         mainwindow.ui
 

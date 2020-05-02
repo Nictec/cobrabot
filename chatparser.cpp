@@ -1,5 +1,7 @@
 #include "chatparser.h"
+#include "commands.h"
 #include <QDebug>
+#include <QJsonArray>
 
 QString getValue(QString tag){
     return tag.split('=')[1];
@@ -22,7 +24,7 @@ ChatParser::ChatParser(QObject *parent) : QObject(parent)
 
 }
 
-QStringList ChatParser::parse(QString raw, Twitch *twitch){
+QStringList ChatParser::parse(QString raw, Twitch *twitch, QJsonArray commands){
     qInfo() << "pre parse";
     if (raw.startsWith("@")){
         qInfo() << "starts with @: " << raw;
@@ -45,6 +47,10 @@ QStringList ChatParser::parse(QString raw, Twitch *twitch){
             data.message = mod.checkCaps(baseMessage, data.mod, data.username, data.id, twitch);
             data.message = mod.checkSymbols(baseMessage, data.mod, data.username, data.id, twitch);
             data.message = mod.checkProfanity(baseMessage, data.mod, data.username, data.id, twitch);
+            if (baseMessage == data.message){
+                Commands *cmd = new Commands;
+                data.message = cmd->evaluate(data, commands, twitch);
+            }
             qInfo() << "Parsing successfull";
 
             QString colored = "<font color=" + data.color + ">" + data.username + ": </font>" + data.message;

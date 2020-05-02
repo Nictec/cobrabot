@@ -108,7 +108,6 @@ QString Modtools::checkCaps(QString message, bool isMod, QString username, QStri
 
 QString Modtools::checkSymbols(QString message, bool isMod, QString username, QString msgId, Twitch *twitch){
     if (isMod || username == twitch->getUsername()){
-        qInfo() << ">>>>>>>>>>>>>>" << username;
         return message;
     } else {
         qInfo() << ">>>>>>>>>>>>>>" << username;

@@ -41,6 +41,7 @@ CobraLink::CobraLink(QObject *parent) : QObject(parent)
     this->success = false;
     this->authManager = new QNetworkAccessManager();
     this->cmdManager = new QNetworkAccessManager();
+    this->cmdAddManager = new QNetworkAccessManager();
     connect(this->authManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(authResponse(QNetworkReply*)));
 }
 
@@ -56,6 +57,22 @@ bool CobraLink::verifyCredentials(QString botToken, QString streamerToken, QStri
     this->formData->insert("streamerToken", streamerToken);
     this->formData->insert("cobraToken", cobraToken);
     return true;
+}
+
+void CobraLink::addCommand(QString cobraToken, QString command, QString response, int cost, QString description, bool mod, bool active){
+    this->cmdAddRequest.setUrl(QUrl("http://localhost:5000/api/commands/"));
+    this->cmdAddRequest.setRawHeader("Authentication", cobraToken.toUtf8());
+    QJsonObject json;
+    json.insert("cmd", command);
+    json.insert("response", response);
+    json.insert("cost", cost);
+    json.insert("mod_only", mod);
+    json.insert("active", active);
+    json.insert("description", description);
+    QJsonDocument doc;
+    doc.setObject(json);
+    QByteArray req_body = doc.toJson();
+    this->cmdAddManager->post(this->cmdAddRequest, req_body);
 }
 
 void CobraLink::getCommands(QString cobraToken){

@@ -26,7 +26,7 @@ class ChatParser : public QObject
     Q_OBJECT
 public:
     explicit ChatParser(QObject *parent = nullptr);
-    QStringList parse(QString raw, Twitch *twitch);
+    QStringList parse(QString raw, Twitch *twitch, QJsonArray commands);
 
 private:
     PrivMessage parsePrivMessage(QString tags, QString message);

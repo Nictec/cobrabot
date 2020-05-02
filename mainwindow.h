@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QNetworkAccessManager>
 #include <cobralink.h>
+#include "addcommand.h"
 
 namespace Ui {
 class MainWindow;
@@ -49,12 +50,14 @@ public slots:
     void on_purge();
     void on_delete();
     void on_profanity_save();
+    void on_cmd_add_finished(bool active, QString command, int cost, bool mod, QString response, QString description);
 
 private:
     Ui::MainWindow *ui;
     QDialog *profanityDialog;
     QLineEdit *profanityWord;
     QComboBox *profanityPunishment;
+    AddCommand *commandDialog;
 
     void loadTable();
 };

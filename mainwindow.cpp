@@ -7,6 +7,7 @@
 #include <QtAwesome.h>
 #include <QSettings>
 #include "botsetup.h"
+#include "addcommand.h"
 #include "cobralink.h"
 
 void MainWindow::loadTable(){
@@ -85,7 +86,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //connect the cobralink event
     this->cobra = new CobraLink;
+    this->commandDialog = new AddCommand;
     connect(cobra->cmdManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(on_cmd_load_finished(QNetworkReply*)));
+    connect(this->commandDialog, SIGNAL(jsonReady(bool, QString, int, bool, QString, QString)), this, SLOT(on_cmd_add_finished(bool, QString, int, bool, QString, QString)));
 
     //load the commands from the Server
     QString twitchSettings = QDir::currentPath() + "/config/twitch.ini";
@@ -139,7 +142,7 @@ void MainWindow::onChat(){
         this->twitchHandler->connection->write(PONG.c_str());
     } else {
        ChatParser parser;
-       QStringList message  = parser.parse(readline, twitchHandler);
+       QStringList message  = parser.parse(readline, twitchHandler, this->commands);
        qInfo() << message;
        if (message.length() == 3){
            //load FontAwesome
@@ -315,8 +318,16 @@ void MainWindow::on_cmd_load_finished(QNetworkReply *reply){
 
         foreach(const QJsonValue & cmd, respObj){
             this->ui->CommandTable->insertRow(this->ui->CommandTable->rowCount());
-            QTableWidgetItem *keyWidget = new QTableWidgetItem(cmd.toObject().toVariantHash()["active"].toString());
-            this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 0, keyWidget);
+            bool is_active = cmd.toObject().toVariantHash()["active"].toBool();
+            QWidget *checkBoxWidget = new QWidget();
+            QCheckBox *checkBox = new QCheckBox();
+            QHBoxLayout *layoutCheckBox = new QHBoxLayout(checkBoxWidget); // create a layer with reference to the widget
+            layoutCheckBox->addWidget(checkBox);            // Set the checkbox in the layer
+            layoutCheckBox->setAlignment(Qt::AlignCenter);  // Center the checkbox
+            layoutCheckBox->setContentsMargins(0,0,0,0);
+            checkBox->setChecked(is_active);
+            //QTableWidgetItem *keyWidget = new QTableWidgetItem(cmd.toObject().toVariantHash()["active"].toString());
+            this->ui->CommandTable->setCellWidget(this->ui->CommandTable->rowCount()-1, 0, checkBoxWidget);
             this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 1, new QTableWidgetItem(cmd.toObject().toVariantHash()["cmd"].toString()));
             this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 2, new QTableWidgetItem(cmd.toObject().toVariantHash()["cost"].toString()));
             this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 3, new QTableWidgetItem(cmd.toObject().toVariantHash()["mod_only"].toString()));
@@ -324,7 +335,34 @@ void MainWindow::on_cmd_load_finished(QNetworkReply *reply){
         }
 }
 
+void MainWindow::on_cmd_add_finished(bool active, QString command, int cost, bool mod, QString response, QString description){
+    QJsonObject json;
+    json.insert("cmd", command);
+    json.insert("response", response);
+    json.insert("cost", cost);
+    json.insert("mod_only", mod);
+    json.insert("active", active);
+    json.insert("description", description);
+    this->commands.append(cobra->newCommand);
+
+    this->ui->CommandTable->insertRow(this->ui->CommandTable->rowCount());
+    bool is_active = active;
+    QWidget *checkBoxWidget = new QWidget();
+    QCheckBox *checkBox = new QCheckBox();
+    QHBoxLayout *layoutCheckBox = new QHBoxLayout(checkBoxWidget); // create a layer with reference to the widget
+    layoutCheckBox->addWidget(checkBox);            // Set the checkbox in the layer
+    layoutCheckBox->setAlignment(Qt::AlignCenter);  // Center the checkbox
+    layoutCheckBox->setContentsMargins(0,0,0,0);
+    checkBox->setChecked(is_active);
+    //QTableWidgetItem *keyWidget = new QTableWidgetItem(cmd.toObject().toVariantHash()["active"].toString());
+    this->ui->CommandTable->setCellWidget(this->ui->CommandTable->rowCount()-1, 0, checkBoxWidget);
+    this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 1, new QTableWidgetItem(command));
+    this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 2, new QTableWidgetItem(QString::number(cost)));
+    this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 3, new QTableWidgetItem(QString(mod ? "true" : "false")));
+    this->ui->CommandTable->setItem(this->ui->CommandTable->rowCount()-1, 4, new QTableWidgetItem(response));
+}
+
 void MainWindow::on_pushButton_6_clicked()
 {
-    qInfo() << "Press event";
+    this->commandDialog->show();
 }

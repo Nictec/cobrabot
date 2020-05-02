@@ -2,13 +2,14 @@
 #define COMMANDS_H
 
 #include <QObject>
+#include "chatparser.h"
 
 class Commands : public QObject
 {
     Q_OBJECT
 public:
     explicit Commands(QObject *parent = nullptr);
-    QString evaluate(QString message, QString viewer, bool isMod, QJsonArray list);
+    QString evaluate(PrivMessage message, QJsonArray list, Twitch *twitch);
 
 signals:
 
